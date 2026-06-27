@@ -3,10 +3,10 @@ import { defineConfig } from 'vite';
 export default defineConfig({
   build: {
     lib: {
-      entry: './src/tsa.ts',
-      name: 'tsa',
+      entry: './src/stsa.ts',
+      name: 'stsa',
       formats: ["es", "umd"],
-      fileName: (format) => `tsa.${format}.js`,      
+      fileName: (format) => `stsa.${format}.js`,      
     },
   },
 });

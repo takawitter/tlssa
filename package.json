@@ -1,15 +1,15 @@
 {
-  "name": "tsa",
-  "version": "0.1.0",
+  "name": "stsa",
+  "version": "0.0.0",
   "description": "A strictly typed Storage Adapter for Local and Session Storage.",
-  "main": "dist/tsa.umd.js",
-  "module": "dist/tsa.es.js",
-  "types": "types/tsa.d.ts",
+  "main": "dist/stsa.umd.js",
+  "module": "dist/stsa.es.js",
+  "types": "types/stsa.d.ts",
   "exports": {
     ".": {
-      "types": "./types/tsa.d.ts",
-      "import": "./dist/tsa.es.js",
-      "require": "./dist/tsa.umd.js"
+      "types": "./types/stsa.d.ts",
+      "import": "./dist/stsa.es.js",
+      "require": "./dist/stsa.umd.js"
     }
   },
   "type": "module",
@@ -31,7 +31,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/takawitter/tsa.git"
+    "url": "git+https://github.com/takawitter/stsa.git"
   },
   "keywords": [
     "event-target",
@@ -48,9 +48,9 @@
   "author": "",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/takawitter/tsa/issues"
+    "url": "https://github.com/takawitter/stsa/issues"
   },
-  "homepage": "https://github.com/takawitter/tsa",
+  "homepage": "https://github.com/takawitter/stsa",
   "devDependencies": {
     "typescript": "~6.0.3",
     "vite": "^8.1.0"

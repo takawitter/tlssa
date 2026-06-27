@@ -16,4 +16,4 @@ export declare class TypedStorageAdapter<Items extends ItemMap> {
     private keyPrefixValid;
 }
 export {};
-//# sourceMappingURL=tsa.d.ts.map
+//# sourceMappingURL=stsa.d.ts.map
