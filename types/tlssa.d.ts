@@ -9,11 +9,11 @@ export declare class TypedStorageAdapter<Items extends ItemMap> {
     getOrCreateItem<K extends keyof Items & string>(key: K, initialValue: Items[K] | ((key: K) => Items[K])): Items[K];
     setItem<K extends keyof Items & string>(key: K, value: Items[K]): void;
     removeItem<K extends keyof Items & string>(key: K): void;
-    keys(): Generator<string | null, void, unknown>;
+    keys(): Generator<keyof Items & string>;
     length(): number;
     clear(): void;
     private createKey;
     private keyPrefixValid;
 }
 export {};
-//# sourceMappingURL=stsa.d.ts.map
+//# sourceMappingURL=tlssa.d.ts.map

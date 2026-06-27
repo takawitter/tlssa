@@ -23,7 +23,7 @@ var e = class {
 		let e = this.keyPrefixValid() ? (e) => e.startsWith(this.keyPrefix) : (e) => !0, t = this.storage.length;
 		for (let n = 0; n < t; n++) {
 			let t = this.storage.key(n);
-			t && e(t) && (yield this.storage.getItem(t));
+			t && e(t) && (yield t.substring(this.keyPrefix ? this.keyPrefix.length + 1 : 0));
 		}
 	}
 	length() {
