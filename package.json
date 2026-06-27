@@ -1,15 +1,15 @@
 {
-  "name": "stsa",
-  "version": "0.1.0",
+  "name": "tlssa",
+  "version": "0.0.0",
   "description": "A strictly typed Storage Adapter for Local and Session Storage.",
-  "main": "dist/stsa.umd.js",
-  "module": "dist/stsa.es.js",
-  "types": "types/stsa.d.ts",
+  "main": "dist/tlssa.umd.js",
+  "module": "dist/tlssa.es.js",
+  "types": "types/tlssa.d.ts",
   "exports": {
     ".": {
-      "types": "./types/stsa.d.ts",
-      "import": "./dist/stsa.es.js",
-      "require": "./dist/stsa.umd.js"
+      "types": "./types/tlssa.d.ts",
+      "import": "./dist/tlssa.es.js",
+      "require": "./dist/tlssa.umd.js"
     }
   },
   "type": "module",
@@ -31,7 +31,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/takawitter/stsa.git"
+    "url": "git+https://github.com/takawitter/tlssa.git"
   },
   "keywords": [
     "event-target",
@@ -48,9 +48,9 @@
   "author": "",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/takawitter/stsa/issues"
+    "url": "https://github.com/takawitter/tlssa/issues"
   },
-  "homepage": "https://github.com/takawitter/stsa",
+  "homepage": "https://github.com/takawitter/tlssa",
   "devDependencies": {
     "typescript": "~6.0.3",
     "vite": "^8.1.0"

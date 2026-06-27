@@ -1,6 +1,6 @@
-# Strictly-typed Storage Adapter (stsa).
+# Typed Local and Session Storage Adapter (tlssa).
 
-Strictly-typed Storage Adapter (STSA) - Strictly-typed [Local](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage) and [Session](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage) Storage Adapter for Typescript.
+Typed Locan and Session Storage Adapter (TLSSA) - A Strictly-typed [Local](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage) and [Session](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage) Storage Adapter for Typescript.
 
 [![Current Release](https://img.shields.io/npm/v/stsa.svg)](https://www.npmjs.com/package/stsa)
 [![Licence](https://img.shields.io/github/license/takawitter/stsa)](https://github.com/takawitter/stsa/blob/master/LICENSE)
@@ -8,7 +8,7 @@ Strictly-typed Storage Adapter (STSA) - Strictly-typed [Local](https://developer
 ## Quick start
 
 ```bash
-npm i stsa
+npm i tlssa
 ```
 
 Define the schema of entities you want to store to local or session storage.
