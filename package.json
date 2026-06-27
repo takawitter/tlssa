@@ -1,6 +1,6 @@
 {
   "name": "tlssa",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "A strictly typed Storage Adapter for Local and Session Storage.",
   "main": "dist/tlssa.umd.js",
   "module": "dist/tlssa.es.js",
