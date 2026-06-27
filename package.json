@@ -34,14 +34,11 @@
     "url": "git+https://github.com/takawitter/tlssa.git"
   },
   "keywords": [
-    "event-target",
-    "EventTarget",
+    "local-storage",
+    "session-storage",
     "type-safe",
     "strictly-typed",
-    "events",
-    "custom-event",
-    "event-emitter",
-    "dom",
+    "JSON",
     "browser",
     "typescript"
   ],
