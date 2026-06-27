@@ -48,7 +48,7 @@ export class TypedStorageAdapter<Items extends ItemMap>{
         this.storage.removeItem(this.createKey(key));
     }
 
-    *keys(){
+    *keys(): Generator<keyof Items & string>{
         const keyValid = this.keyPrefixValid() ?
             (k: string) => k.startsWith(this.keyPrefix!):
             (_: string) => true;
@@ -56,12 +56,12 @@ export class TypedStorageAdapter<Items extends ItemMap>{
         for(let i = 0; i < n; i++){
             const k = this.storage.key(i);
             if(k && keyValid(k)){
-                yield(this.storage.getItem(k));
+                yield(k.substring(this.keyPrefix ? this.keyPrefix.length + 1 : 0) as keyof Items & string);
             }
         }
     }
 
-    length(){
+    length(): number{
         return this.keyPrefixValid() ?
             [...this.keys()].length :
             this.storage.length;
