@@ -1,5 +1,6 @@
-type ItemValue = number | string | boolean | object;
+type ItemValue = number | string | boolean | ItemValue[] | {[key: string]: ItemValue};
 type ItemMap = Record<string, ItemValue>;
+type StringKeyOf<T extends Record<string, ItemValue>> = keyof T & string;
 
 export class TypedStorageAdapter<Items extends ItemMap>{
     private storage: Storage;
@@ -10,9 +11,9 @@ export class TypedStorageAdapter<Items extends ItemMap>{
         this.keyPrefix = keyPrefix;
     }
 
-    getItem<K extends keyof Items>(
+    getItem<K extends StringKeyOf<Items>>(
         key: K, defaultValue: Items[K] | ((key: K)=>Items[K])): Items[K];
-    getItem<K extends keyof Items>(
+    getItem<K extends StringKeyOf<Items>>(
         key: K): Items[K] | null;
     getItem(
         key: string, defaultValue?: ItemValue | ((key: string)=>ItemValue)): ItemValue | null
@@ -24,56 +25,59 @@ export class TypedStorageAdapter<Items extends ItemMap>{
         return typeof defaultValue === 'function' ? defaultValue(key) : defaultValue;
     }
 
-    getOrCreateItem<K extends keyof Items & string>(
+    getOrCreateItem<K extends StringKeyOf<Items>>(
         key: K,
         initialValue: Items[K] | ((key: K)=>Items[K])): Items[K]
     {
-        let ret = this.getItem(key);
-        if(ret) return ret;
-        ret = typeof initialValue === 'function' ? initialValue(key) as Items[K]: initialValue;
-        this.storage.setItem(this.createKey(key), JSON.stringify(ret));
-        return ret;
+        return this.getItem(key) || this.doSetItem(key, initialValue);
     }
 
-    setItem<K extends keyof Items & string>(
-        key: K, value: Items[K]): void
+    setItem<K extends StringKeyOf<Items>>(
+        key: K, value: Items[K] | ((key: K)=>Items[K])): void
     {
-        this.storage.setItem(this.createKey(key), JSON.stringify(value));
+        this.doSetItem(key, value);
     }
 
-    removeItem<K extends keyof Items & string>(key: K): void{
+    removeItem<K extends StringKeyOf<Items>>(key: K): void{
         this.storage.removeItem(this.createKey(key));
     }
 
-    *keys(): Generator<keyof Items & string>{
-        const keyValid = this.keyPrefixValid() ?
-            (k: string) => k.startsWith(this.keyPrefix!):
-            (_: string) => true;
-        let n = this.storage.length;
-        for(let i = 0; i < n; i++){
-            const k = this.storage.key(i);
-            if(k && keyValid(k)){
-                yield(k.substring(this.keyPrefix ? this.keyPrefix.length + 1 : 0) as keyof Items & string);
+    *keys(): Generator<StringKeyOf<Items>>{
+        const prefix = this.keyPrefix;
+        if(this.isValidPrefix(prefix)){
+            for(const k of this.allNonNullStorageKeys()){
+                if(k.startsWith(prefix)){
+                    yield(k.substring(prefix.length + 1));
+                }
+            }
+        } else{
+            for(const k of this.allNonNullStorageKeys()){
+                yield(k);
             }
         }
     }
 
     length(): number{
-        return this.keyPrefixValid() ?
+        return this.isValidPrefix(this.keyPrefix) ?
             [...this.keys()].length :
             this.storage.length;
     }
 
     clear(): void{
-        if(!this.keyPrefixValid()){
+        if(!this.isValidPrefix(this.keyPrefix)){
             this.storage.clear();
             return;
         }
-        for(const k of [...this.keys()]){
-            if(k === null) continue;
-            if(k.startsWith(this.keyPrefix!)){
-                this.storage.removeItem(k);
-            }
+        for(const k of this.keys()){
+            this.storage.removeItem(k);
+        }
+    }
+
+    private *allNonNullStorageKeys(): Generator<string>{
+        let n = this.storage.length;
+        for(let i = 0; i < n; i++){
+            const k = this.storage.key(i);
+            if(k) yield(k);
         }
     }
 
@@ -85,7 +89,17 @@ export class TypedStorageAdapter<Items extends ItemMap>{
         return key;
     }
 
-    private keyPrefixValid(){
-        return this.keyPrefix && this.keyPrefix.length > 0;
+    private isValidPrefix(prefix?: string): prefix is string{
+        return typeof prefix !== "undefined" && prefix.length > 0;
+    }
+
+    private doSetItem<K extends StringKeyOf<Items>>(
+        key: K, value: Items[K] | ((key: K)=>Items[K])): Items[K]
+    {
+        if(typeof value === 'function'){
+            value = value(key);
+        }
+        this.storage.setItem(this.createKey(key), JSON.stringify(value));
+        return value;
     }
 }
