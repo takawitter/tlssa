@@ -1,6 +1,6 @@
 {
   "name": "tlssa",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "A strictly typed Local and Storage Adapter for Typescript that uses JSON format when storing to actual storage.",
   "main": "dist/tlssa.umd.js",
   "module": "dist/tlssa.es.js",
