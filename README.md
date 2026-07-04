@@ -20,7 +20,9 @@ Then, you can load and store entities using typed `getItem` and `setItem` method
 // and storage instance and key prefix as constructor parameters.
 // Actual key to access the storage is "myapp.key". If key prefix is not provided,
 // the actual key is just "key".
-const storage = new TypedStorageAdapter<{id: string; name: string}>(localStorage, "myapp");
+const storage = new TypedStorageAdapter<
+    {id: string; name: string}
+    >(localStorage, "myapp");
 
 // getOrCreateItem returns the stored value or "000" with storing it
 // if "myapp.id" is not stored.
