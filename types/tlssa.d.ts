@@ -1,9 +1,12 @@
-type ItemValue = number | string | boolean | ItemValue[] | {
-    [key: string]: ItemValue;
+type ItemType = number | string | boolean | ItemType[] | {
+    [key: string]: ItemType;
 };
-type ItemMap = Record<string, ItemValue>;
-type StringKeyOf<T extends Record<string, ItemValue>> = keyof T & string;
-export declare class TypedStorageAdapter<Items extends ItemMap> {
+type ItemMap = Record<string, ItemType>;
+type StringKeyOf<T extends Record<string, ItemType>> = keyof T & string;
+type RejectOptional<T> = {
+    [K in keyof T]-?: undefined extends T[K] ? never : T[K];
+};
+export declare class TypedStorageAdapter<Items extends RejectOptional<Items> & ItemMap> {
     private storage;
     private keyPrefix?;
     constructor(storage: Storage, keyPrefix?: string);

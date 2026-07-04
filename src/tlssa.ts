@@ -1,8 +1,11 @@
-type ItemValue = number | string | boolean | ItemValue[] | {[key: string]: ItemValue};
-type ItemMap = Record<string, ItemValue>;
-type StringKeyOf<T extends Record<string, ItemValue>> = keyof T & string;
+type ItemType = number | string | boolean | ItemType[] | {[key: string]: ItemType};
+type ItemMap = Record<string, ItemType>;
+type StringKeyOf<T extends Record<string, ItemType>> = keyof T & string;
+type RejectOptional<T> = {
+  [K in keyof T]-?: undefined extends T[K] ? never : T[K];
+};
 
-export class TypedStorageAdapter<Items extends ItemMap>{
+export class TypedStorageAdapter<Items extends RejectOptional<Items> & ItemMap>{
     private storage: Storage;
     private keyPrefix?: string;
 
@@ -15,14 +18,15 @@ export class TypedStorageAdapter<Items extends ItemMap>{
         key: K, defaultValue: Items[K] | ((key: K)=>Items[K])): Items[K];
     getItem<K extends StringKeyOf<Items>>(
         key: K): Items[K] | null;
-    getItem(
-        key: string, defaultValue?: ItemValue | ((key: string)=>ItemValue)): ItemValue | null
+    getItem<K extends StringKeyOf<Items>>(
+        key: K, defaultValue?: Items[K] | ((key: K)=>Items[K])): Items[K] | null
     {
         let ret = this.storage.getItem(this.createKey(key));
         if(ret) ret = JSON.parse(ret);
-        if(ret !== null) return ret;
+        if(ret !== null) return ret as Items[K];
         if(!defaultValue) return null;
-        return typeof defaultValue === 'function' ? defaultValue(key) : defaultValue;
+        return typeof defaultValue === 'function' ?
+            (defaultValue as (key: K)=>Items[K])(key) : defaultValue;
     }
 
     getOrCreateItem<K extends StringKeyOf<Items>>(
@@ -64,12 +68,15 @@ export class TypedStorageAdapter<Items extends ItemMap>{
     }
 
     clear(): void{
-        if(!this.isValidPrefix(this.keyPrefix)){
+        const prefix = this.keyPrefix;
+        if(!this.isValidPrefix(prefix)){
             this.storage.clear();
             return;
         }
-        for(const k of this.keys()){
-            this.storage.removeItem(k);
+        for(const k of this.allNonNullStorageKeys()){
+            if(k.startsWith(prefix)){
+                this.storage.removeItem(k);
+            }
         }
     }
 
@@ -97,7 +104,7 @@ export class TypedStorageAdapter<Items extends ItemMap>{
         key: K, value: Items[K] | ((key: K)=>Items[K])): Items[K]
     {
         if(typeof value === 'function'){
-            value = value(key);
+            value = (value as ((key: K)=>Items[K]))(key);
         }
         this.storage.setItem(this.createKey(key), JSON.stringify(value));
         return value;

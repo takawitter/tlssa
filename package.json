@@ -28,7 +28,8 @@
     "build": "tsc && vite build",
     "prepare": "npm run build",
     "preview": "vite preview",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "vitest run",
+    "testWatch": "vitest"
   },
   "repository": {
     "type": "git",
@@ -50,8 +51,9 @@
   },
   "homepage": "https://github.com/takawitter/tlssa",
   "devDependencies": {
+    "@vitest/browser-playwright": "^4.1.9",
     "typescript": "~6.0.3",
-    "vite": "^8.1.0"
-  },
-  "dependencies": {}
+    "vite": "^8.1.0",
+    "vitest": "^4.1.9"
+  }
 }

@@ -27,11 +27,12 @@ var e = class {
 		return this.isValidPrefix(this.keyPrefix) ? [...this.keys()].length : this.storage.length;
 	}
 	clear() {
-		if (!this.isValidPrefix(this.keyPrefix)) {
+		let e = this.keyPrefix;
+		if (!this.isValidPrefix(e)) {
 			this.storage.clear();
 			return;
 		}
-		for (let e of this.keys()) this.storage.removeItem(e);
+		for (let t of this.allNonNullStorageKeys()) t.startsWith(e) && this.storage.removeItem(t);
 	}
 	*allNonNullStorageKeys() {
 		let e = this.storage.length;
