@@ -1,9 +1,12 @@
+// number, string, boolean, array of those and object that has value types up to this point.
 type ItemType = number | string | boolean | ItemType[] | {[key: string]: ItemType};
+// map ({name: type, ...}) of items.
 type ItemMap = Record<string, ItemType>;
-type StringKeyOf<T extends Record<string, ItemType>> = keyof T & string;
+// type to omit undefined.
 type RejectOptional<T> = {
   [K in keyof T]-?: undefined extends T[K] ? never : T[K];
 };
+type StringKeyOf<T extends Record<string, ItemType>> = keyof T & string;
 
 export class TypedStorageAdapter<Items extends RejectOptional<Items> & ItemMap>{
     private storage: Storage;

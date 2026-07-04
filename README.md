@@ -57,7 +57,9 @@ storage.clear();
 ## Type checking
 
 ```ts
-const storage = new TypedStorageAdapter<{id: string; name: string}>(localStorage, "myapp");
+const storage = new TypedStorageAdapter<
+    {id: string; name: string}
+    >(localStorage, "myapp");
 
 storage.getOrCreateItem("id", "000");  // OK
 storage.getOrCreateItem("id", 0);  // NG
@@ -79,4 +81,24 @@ storage.setItem("name", 20);  // NG
 
 storage.removeItem("id");  // OK
 storage.removeItem("age");  // NG
+```
+
+## Note
+
+`TypedStorageAdapter` only accepts definitions excepts that has null, undefined or function types.
+Actual type definitions as follows:
+
+```ts
+// number, string, boolean, array of those and object that has value types up to this point.
+type ItemType = number | string | boolean | ItemType[] | {[key: string]: ItemType};
+// map ({name: type, ...}) of items.
+type ItemMap = Record<string, ItemType>;
+// type to omit undefined.
+type RejectOptional<T> = {
+  [K in keyof T]-?: undefined extends T[K] ? never : T[K];
+};
+// TypedStorageAdapter acceps item map except that has undefined as value type.
+export class TypedStorageAdapter<Items extends RejectOptional<Items> & ItemMap>{
+    ...
+}
 ```
