@@ -9,7 +9,9 @@ export default defineConfig({
       provider: playwright(),
       // https://vitest.dev/config/browser/playwright
       instances: [
-        { browser: 'chromium' }
+        { browser: 'chromium' },
+        { browser: 'firefox' },
+        { browser: 'webkit' }
       ],
     },
     dir: './test'

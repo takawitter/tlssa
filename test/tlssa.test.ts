@@ -102,7 +102,7 @@ test("keys() return keys of all items in storage.", ()=>{
     expect(s.length()).toBe(0);
     s.setItem("id", "002");
     localStorage.setItem("foo", "bar");
-    expect([...s.keys()]).toStrictEqual(["id", "foo"]);
+    expect([...s.keys()].toSorted()).toStrictEqual(["foo", "id"]);
 });
 
 
@@ -150,8 +150,11 @@ test("[prefix] keys() only returns keys that has valid prefix.", ()=>{
     s.setItem("id", "000");
     localStorage.setItem("name", "John");
     expect([...s.keys()]).toStrictEqual(["id"]);
-    expect(localStorage.key(0)).toBe("prefix.id");
-    expect(localStorage.key(1)).toBe("name");
+    expect([...(function*(){
+        for(let i = 0; i < localStorage.length; i++){
+            yield(localStorage.key(i))
+        }
+    })()].toSorted()).toStrictEqual(["name", "prefix.id"]);
 });
 
 test("[prefix] clear() only clears items that has valid key with prefix.", ()=>{
